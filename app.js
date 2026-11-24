@@ -74,7 +74,7 @@ function exportCSV(){const rows=searched(allFiltered()),cols=[['id','Employee ID
  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='compensation-analysis-filtered.csv';a.click();URL.revokeObjectURL(url);
 }
 async function init(){
- try{const response=await fetch('data/compensation.json');if(!response.ok)throw new Error(`HTTP ${response.status}`);const data=await response.json();state.employees=data.employees;state.bands=data.salaryBands;
+ try{const response=await fetch('compensation.json');if(!response.ok)throw new Error(`HTTP ${response.status}`);const data=await response.json();state.employees=data.employees;state.bands=data.salaryBands;
   fillSelect('departmentFilter',[...new Set(state.employees.map(e=>e.department))].sort().map(x=>[x,x]));fillSelect('locationFilter',[...new Set(state.employees.map(e=>e.location))].sort().map(x=>[x,x]));fillSelect('roleFilter',state.bands.map(r=>[r.jobCode,r.jobTitle]).sort((a,b)=>a[1].localeCompare(b[1])));
   elements.forEach(id=>$(id).addEventListener('change',()=>{state.page=0;render()}));$('employeeSearch').addEventListener('input',()=>{state.page=0;employees(allFiltered())});$('resetFilters').addEventListener('click',()=>{elements.forEach(id=>$(id).value='');$('employeeSearch').value='';state.page=0;render()});$('exportCsv').addEventListener('click',exportCSV);
   $('prevPage').addEventListener('click',()=>{state.page=Math.max(0,state.page-1);employees(allFiltered())});$('nextPage').addEventListener('click',()=>{state.page++;employees(allFiltered())});$('employeeTable').addEventListener('click',event=>{const btn=event.target.closest('[data-employee]');if(btn)showDetails(btn.dataset.employee)});
