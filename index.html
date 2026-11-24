@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive HR compensation analysis portfolio project built with synthetic employee data." />
+  <meta name="theme-color" content="#101e32" />
+  <title>Compensation Intelligence | HR Analytics Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">◈</span><span>COMP<span class="brand-accent">INTEL</span><small>PEOPLE ANALYTICS LAB</small></span></div>
+    <p class="side-label">WORKSPACE</p>
+    <nav aria-label="Primary navigation">
+      <a href="#overview" class="nav-link active" data-nav="overview"><span>▦</span> Executive overview</a>
+      <a href="#departments" class="nav-link" data-nav="departments"><span>▥</span> Department insights</a>
+      <a href="#roles" class="nav-link" data-nav="roles"><span>▤</span> Role benchmarking</a>
+      <a href="#employees" class="nav-link" data-nav="employees"><span>☷</span> Employee explorer</a>
+      <a href="#recommendations" class="nav-link" data-nav="recommendations"><span>✧</span> Recommendations</a>
+    </nav>
+    <div class="sidebar-bottom"><span class="dot"></span> Portfolio simulation <p>All employees, compensation amounts, and salary bands are fictional.</p></div>
+  </aside>
+  <main class="main" id="overview">
+    <header class="topbar"><div class="topbar-label">HR ANALYTICS <span>/</span> COMPENSATION INTELLIGENCE</div><div class="topbar-right"><span class="top-tag">● SYNTHETIC DATA</span><span class="avatar">JC</span></div></header>
+    <div class="content">
+      <section class="hero"><div><div class="eyebrow">INTERACTIVE COMPENSATION WORKSPACE</div><h1>Compensation <em>Intelligence</em></h1><p>Explore salary structure, pay positioning, and potential adjustment priorities. Turn workforce data into decisions.</p></div><div class="hero-actions"><button id="resetFilters" class="btn btn-secondary">↻ Reset filters</button><button id="exportCsv" class="btn btn-primary">↓ Export filtered CSV</button></div></section>
+      <section class="filters" aria-label="Dashboard filters"><div class="filter-heading"><span>⚑</span> ANALYSIS FILTERS <span class="filter-count" id="filterCount">All employees</span></div><div class="filter-grid">
+        <label>Department<select id="departmentFilter"><option value="">All departments</option></select></label>
+        <label>Location<select id="locationFilter"><option value="">All locations</option></select></label>
+        <label>Job classification<select id="roleFilter"><option value="">All job titles</option></select></label>
+        <label>Pay positioning<select id="statusFilter"><option value="">All positions</option><option>Below Minimum</option><option>In Range</option><option>Above Maximum</option></select></label>
+      </div></section>
+      <section class="metrics" aria-label="Key compensation indicators">
+        <article class="metric"><div class="metric-top">EMPLOYEES ANALYZED <span class="metric-icon">♙</span></div><div class="metric-value" id="kpiEmployees">—</div><div class="metric-sub">Filtered population</div></article>
+        <article class="metric"><div class="metric-top">AVERAGE BASE SALARY <span class="metric-icon">$</span></div><div class="metric-value" id="kpiSalary">—</div><div class="metric-sub">Annualized base pay</div></article>
+        <article class="metric"><div class="metric-top">AVG. COMPA-RATIO <span class="metric-icon">◎</span></div><div class="metric-value" id="kpiCompa">—</div><div class="metric-sub">100% = salary at midpoint</div></article>
+        <article class="metric"><div class="metric-top">BELOW RANGE MINIMUM <span class="metric-icon orange">!</span></div><div class="metric-value" id="kpiBelow">—</div><div class="metric-sub" id="kpiBelowSub">Require pay-range review</div></article>
+        <article class="metric"><div class="metric-top">EST. COST TO MINIMUM <span class="metric-icon">↗</span></div><div class="metric-value" id="kpiCost">—</div><div class="metric-sub">Annual base-pay increase only</div></article>
+      </section>
+      <div class="section-title"><div><span class="section-kicker">01 / OVERVIEW</span><h2>Pay distribution &amp; positioning</h2></div><p>Interactive views update with your filters</p></div>
+      <section class="visual-grid"><article class="panel"><div class="panel-head"><div><h3>Base salary distribution</h3><p>Employee counts by annual salary bracket</p></div><span class="mini-label">USD / YEAR</span></div><div id="salaryHistogram" class="chart-box" role="img" aria-label="Salary distribution histogram"></div></article>
+        <article class="panel"><div class="panel-head"><div><h3>Range compliance</h3><p>Where base salaries fall relative to job bands</p></div><span class="mini-label">EMPLOYEE MIX</span></div><div class="donut-wrap"><div id="payDonut" class="donut" aria-label="Pay position donut chart"></div><div id="donutLegend" class="legend"></div></div></article></section>
+      <section id="departments" class="section-block"><div class="section-title"><div><span class="section-kicker">02 / DEPARTMENT INSIGHTS</span><h2>Department comparison</h2></div><p>Average compa-ratio across departments</p></div><article class="panel"><div class="panel-head"><div><h3>Pay relative to salary midpoint</h3><p>The dashed benchmark indicates 100% of the midpoint</p></div></div><div id="departmentChart" class="dept-chart"></div></article></section>
+      <section id="roles" class="section-block"><div class="section-title"><div><span class="section-kicker">03 / ROLE BENCHMARKING</span><h2>Job classification analysis</h2></div><p>Compare average salary with internal band midpoint</p></div><article class="panel table-panel"><div class="panel-head"><div><h3>Role-level compensation</h3><p>Filtered employees, grouped by job classification</p></div></div><div class="table-scroller"><table><thead><tr><th>Job classification</th><th>Employees</th><th>Avg. base salary</th><th>Band midpoint</th><th>Avg. compa-ratio</th><th>Below minimum</th><th>Cost to minimum</th></tr></thead><tbody id="roleTable"></tbody></table></div></article></section>
+      <section id="employees" class="section-block"><div class="section-title"><div><span class="section-kicker">04 / EMPLOYEE EXPLORER</span><h2>Individual compensation records</h2></div><p>Search records and select an employee for details</p></div><article class="panel table-panel"><div class="table-toolbar"><label class="search-box"><span>⌕</span><input type="search" id="employeeSearch" placeholder="Search ID, job title, department…" aria-label="Search employee records"></label><span id="resultCount" class="result-count"></span></div><div class="table-scroller"><table><thead><tr><th>Employee ID</th><th>Role / department</th><th>Location</th><th>Base salary</th><th>Compa-ratio</th><th>Range position</th><th></th></tr></thead><tbody id="employeeTable"></tbody></table></div><div class="pagination"><span id="pageSummary"></span><div><button id="prevPage" class="btn btn-small">← Prev</button><button id="nextPage" class="btn btn-small">Next →</button></div></div></article></section>
+      <section id="recommendations" class="section-block"><div class="section-title"><div><span class="section-kicker">05 / INTERPRETATION</span><h2>Executive recommendations</h2></div><p>Decision support, not an automated pay decision</p></div><div id="recommendationsList" class="recommendation-grid"></div></section>
+      <footer><strong>COMPINTEL / Portfolio project</strong><p>Illustrative compensation model • Not a market salary survey, pay equity audit, or real employee database. Findings require role, geography, tenure, performance, policy, and legal review before action.</p><a href="https://github.com/" target="_blank" rel="noopener noreferrer">Built for GitHub Pages ↗</a></footer>
+    </div>
+  </main>
+</div>
+<dialog id="employeeDialog"><div class="dialog-inner"><div class="dialog-head"><div><div class="eyebrow">EMPLOYEE PAY PROFILE</div><h2 id="detailTitle">—</h2></div><button id="closeDialog" class="close-button" aria-label="Close employee details">×</button></div><div id="detailContent"></div><button class="btn btn-primary" id="closeDetailBottom">Close profile</button></div></dialog>
+<script src="app.js" defer></script>
+</body></html>
